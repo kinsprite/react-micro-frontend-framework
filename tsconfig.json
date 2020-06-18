@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "sourceMap": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": false,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "removeComments": false,
+    "noImplicitAny": true,
+    "module": "ESNext",
+    "target": "ES5",
+    "jsx": "react",
+    "allowJs": false,
+    "importsNotUsedAsValues": "preserve",
+    "typeRoots": ["node_modules/@types/"],
+    "types": [
+      // "jquery",
+      "node",
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
+  },
+  "compileOnSave": false,
+  "filesGlob": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "!node_modules/**"
+  ]
+}

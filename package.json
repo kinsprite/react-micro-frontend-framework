@@ -1,0 +1,39 @@
+{
+  "name": "react-microservice-framework",
+  "version": "1.0.0",
+  "description": "React microservice framework",
+  "main": "index.js",
+  "repository": "https://github.com/kinsprite/react-microservice-framework",
+  "author": "kinsprite",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.3.0",
+    "@typescript-eslint/parser": "^3.3.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "fork-ts-checker-webpack-plugin": "^5.0.1",
+    "html-webpack-plugin": "^4.3.0",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "@types/jest": "^26.0.0",
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "connected-react-router": "^6.8.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "redux-saga": "^1.1.3",
+    "redux-thunk": "^2.3.0"
+  }
+}
