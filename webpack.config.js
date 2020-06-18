@@ -9,6 +9,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const postcssNormalize = require('postcss-normalize');
+const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -113,7 +114,9 @@ module.exports = (env, argv) => {
           use: getStyleLoaders({
             importLoaders: 1,
             sourceMap: true,
-            modules: true,
+            modules: {
+              getLocalIdent: getCSSModuleLocalIdent,
+            },
           }),
         },
         {
