@@ -20,6 +20,10 @@ module.exports = (env, argv) => {
   const isEnvDevelopment = false;
   const isEnvProduction = true;
 
+  const imageInlineSizeLimit = parseInt(
+    process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
+  );
+
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
@@ -93,46 +97,67 @@ module.exports = (env, argv) => {
       }),
     ].filter(Boolean),
     module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: 'ts-loader',
-              options: {
-              // disable type checker - we will use it in fork plugin
-                transpileOnly: true,
+      rules: [{
+        oneOf: [
+          {
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            loader: require.resolve('url-loader'),
+            options: {
+              limit: imageInlineSizeLimit,
+              name: 'media/[name].[hash:8].[ext]',
+            },
+          },
+          {
+            test: /\.[jt]sx?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'ts-loader',
+                options: {
+                  // disable type checker - we will use it in fork plugin
+                  transpileOnly: true,
+                },
               },
+            ],
+          },
+          // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
+          // using the extension .module.css
+          {
+            test: cssModuleRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              sourceMap: true,
+              modules: {
+                getLocalIdent: getCSSModuleLocalIdent,
+              },
+            }),
+          },
+          {
+            test: cssRegex,
+            exclude: cssModuleRegex,
+            use: getStyleLoaders({
+              importLoaders: 1,
+              sourceMap: true,
+            }),
+            // Don't consider CSS imports dead code even if the
+            // containing package claims to have no side effects.
+            // Remove this when webpack adds a warning or an error for this.
+            // See https://github.com/webpack/webpack/issues/6571
+            sideEffects: true,
+          },
+          {
+            loader: require.resolve('file-loader'),
+            // Exclude `js` files to keep "css" loader working as it injects
+            // its runtime that would otherwise be processed through "file" loader.
+            // Also exclude `html` and `json` extensions so they get processed
+            // by webpacks internal loaders.
+            exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+            options: {
+              name: 'media/[name].[hash:8].[ext]',
             },
-          ],
-        },
-        // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-        // using the extension .module.css
-        {
-          test: cssModuleRegex,
-          use: getStyleLoaders({
-            importLoaders: 1,
-            sourceMap: true,
-            modules: {
-              getLocalIdent: getCSSModuleLocalIdent,
-            },
-          }),
-        },
-        {
-          test: cssRegex,
-          exclude: cssModuleRegex,
-          use: getStyleLoaders({
-            importLoaders: 1,
-            sourceMap: true,
-          }),
-          // Don't consider CSS imports dead code even if the
-          // containing package claims to have no side effects.
-          // Remove this when webpack adds a warning or an error for this.
-          // See https://github.com/webpack/webpack/issues/6571
-          sideEffects: true,
-        },
-      ],
+          },
+        ], // oneOf
+      }], // rules
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
