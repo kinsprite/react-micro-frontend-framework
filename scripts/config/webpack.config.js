@@ -4,13 +4,18 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
+const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const safePostCssParser = require('postcss-safe-parser');
+
 const postcssNormalize = require('postcss-normalize');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
 const pkgJson = require('../internal/pkgJson');
 const resolvePath = require('../internal/resolvePath');
 const getPublicUrlOrPath = require('../internal/getPublicUrlOrPath');
+const getGitTagOrShort = require('../internal/getGitTagOrShort');
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -20,12 +25,22 @@ module.exports = (env) => {
   const isEnvDevelopment = env === 'development';
   const isEnvProduction = env === 'production';
 
+  const isEnvProductionProfile = isEnvProduction && process.argv.includes('--profile');
+
   // Source maps are resource heavy and can cause out of memory issue for large source files.
   const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
   const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
+
+  const webpackEntry = {
+    [pkgJson.getMainEntryName()]: resolvePath('src/index.tsx'),
+  };
+
+  const gitRev = getGitTagOrShort();
+  const publicUrlOrPath = getPublicUrlOrPath(isEnvDevelopment);
+  const libraryName = pkgJson.getLibraryName();
 
   // common function to get style loaders
   const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -84,14 +99,40 @@ module.exports = (env) => {
         ? 'source-map'
         : false)
       : isEnvDevelopment && 'cheap-module-source-map',
-    entry: {
-      framework: resolvePath('src/index.tsx'),
-    },
+    entry: webpackEntry,
     plugins: [
       new CleanWebpackPlugin(),
       // new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({ template: resolvePath('public/index.html') }),
-      new ManifestPlugin(),
+      new ManifestPlugin({
+        fileName: 'rms-manifest.json',
+        publicPath: publicUrlOrPath,
+        generate: (seed, files, entrypoints) => {
+          const manifestFiles = files.reduce((manifest, file) => {
+            manifest[file.name] = file.path; // eslint-disable-line no-param-reassign
+            return manifest;
+          }, seed);
+
+          const entrypointFiles = Object.keys(entrypoints).reduce((acc, key) => acc.concat(
+            entrypoints[key].filter((fileName) => !fileName.endsWith('.map')).map((fileName) => {
+              // add publicUrlOrPath to file
+              if (publicUrlOrPath && !fileName.startsWith(publicUrlOrPath)) {
+                return publicUrlOrPath + fileName;
+              }
+
+              return fileName;
+            }),
+          ), []);
+
+          return {
+            entrypoints: entrypointFiles,
+            exportLibrary: libraryName,
+            files: manifestFiles,
+            gitRevision: gitRev,
+            publicPath: publicUrlOrPath,
+          };
+        },
+      }),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
           files: './src/**/*', // required - same as command `eslint ./src/**/* --ext .ts,.tsx,.js,.jsx`
@@ -176,12 +217,57 @@ module.exports = (env) => {
     // },
     output: {
       path: resolvePath((isEnvProduction && 'dist') || (isEnvDevelopment && '.tmp')),
-      publicPath: getPublicUrlOrPath(isEnvDevelopment),
+      publicPath: publicUrlOrPath,
       filename: (isEnvProduction && '[name].[contenthash:8].js') || (isEnvDevelopment && '[name].js'),
       chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),
-      // publicPath: '/framework',
-      library: pkgJson.getLibraryName(),
+      library: libraryName,
       libraryTarget: 'umd',
+    },
+    optimization: {
+      minimize: isEnvProduction,
+      minimizer: [
+        // This is only used in production mode
+        new TerserPlugin({
+          terserOptions: {
+            parse: {
+              ecma: 8,
+            },
+            compress: {
+              ecma: 5,
+              warnings: false,
+              comparisons: false,
+              inline: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            // Added for profiling in devtools
+            keep_classnames: isEnvProductionProfile,
+            keep_fnames: isEnvProductionProfile,
+            output: {
+              ecma: 5,
+              comments: false,
+              ascii_only: true,
+            },
+          },
+          sourceMap: shouldUseSourceMap,
+        }),
+        // This is only used in production mode
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            parser: safePostCssParser,
+            map: shouldUseSourceMap
+              ? {
+                inline: false,
+                annotation: true,
+              }
+              : false,
+          },
+          cssProcessorPluginOptions: {
+            preset: ['default', { minifyFontValues: { removeQuotes: false } }],
+          },
+        }),
+      ],
     },
   };
 };

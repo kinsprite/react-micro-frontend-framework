@@ -1,4 +1,6 @@
 const camelCase = require('camelcase');
+const { paramCase } = require('param-case');
+
 const resolvePath = require('./resolvePath');
 
 function getPkgJson() {
@@ -9,15 +11,23 @@ function getMicroserviceFolderName() {
   const pkgJson = getPkgJson();
   const names = `${pkgJson.name}`.replace('react-microservice', 'rms').split('/');
   const lastName = names[names.length - 1];
-  return lastName.toLocaleLowerCase();
+  return paramCase(lastName);
 }
 
 function getLibraryName() {
   return camelCase(getMicroserviceFolderName());
 }
 
+function getMainEntryName() {
+  const pkgJson = getPkgJson();
+  const names = `${pkgJson.name}`.replace('react-microservice', '').split('/');
+  const lastName = names[names.length - 1];
+  return paramCase(lastName);
+}
+
 module.exports = {
   getPkgJson,
   getMicroserviceFolderName,
   getLibraryName,
+  getMainEntryName,
 };

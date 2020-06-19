@@ -1,19 +1,16 @@
-const git = require('git-rev-sync');
 const { paramCase } = require('param-case');
 
 const pkgJson = require('./pkgJson');
-const getAppDir = require('./getAppDir');
+const getGitTagOrShort = require('./getGitTagOrShort');
 
-function gitTagOrSHA() {
-  const long = git.long(getAppDir());
-  const tag = git.tag();
+function getRevisionPath() {
+  const gitRev = getGitTagOrShort();
 
-  if (tag.toLowerCase() === long.toLowerCase()) {
-    // Generally, eight to ten characters are more than enough to be unique within a project.
-    return long.substr(0, 8);
+  if (gitRev.tag) {
+    return paramCase(gitRev.tag, { stripRegexp: /[^A-Z0-9\\.]/gi });
   }
 
-  return paramCase(tag, { stripRegexp: /[^A-Z0-9\\.]/gi });
+  return gitRev.short;
 }
 
 function getPublicUrlOrPath(isEnvDevelopment) {
@@ -30,7 +27,7 @@ function getPublicUrlOrPath(isEnvDevelopment) {
 
   const folderName = pkgJson.getMicroserviceFolderName();
   // must add the end '/'
-  return `${publicRootURL}${folderName}/${gitTagOrSHA()}/`;
+  return `${publicRootURL}${folderName}/${getRevisionPath()}/`;
 }
 
 module.exports = getPublicUrlOrPath;
