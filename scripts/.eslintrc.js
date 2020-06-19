@@ -4,6 +4,6 @@ module.exports = {
     'import/no-dynamic-require': 'off',
     'no-console': 'off',
     'global-require': 'off',
-    'no-nested-ternary': 'off',
+    // 'no-nested-ternary': 'off',
   },
 };
