@@ -1,5 +1,5 @@
 const git = require('git-rev-sync');
-const paramCase = require('param-case');
+const { paramCase } = require('param-case');
 
 const pkgJson = require('./pkgJson');
 const getAppDir = require('./getAppDir');
@@ -13,7 +13,7 @@ function gitTagOrSHA() {
     return long.substr(0, 8);
   }
 
-  return paramCase(tag);
+  return paramCase(tag, { stripRegexp: /[^A-Z0-9\\.]/gi });
 }
 
 function getPublicUrlOrPath(isEnvDevelopment) {
