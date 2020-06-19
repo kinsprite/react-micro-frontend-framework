@@ -8,7 +8,7 @@ function App() {
       <header className={styles.AppHeader}>
         <img src={logo} className={styles.AppLogo} alt="logo" />
         <p>
-          <code>Hello, React Microservice</code>
+          <code>Hello, React Microservice @ 2020</code>
         </p>
         <a
           className={styles.AppLink}

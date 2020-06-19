@@ -25,9 +25,15 @@ function getMainEntryName() {
   return paramCase(lastName);
 }
 
+function getRoutes() {
+  const pkgJson = getPkgJson();
+  return (Array.isArray(pkgJson.routes) && pkgJson.routes) || [];
+}
+
 module.exports = {
   getPkgJson,
   getMicroserviceFolderName,
   getLibraryName,
   getMainEntryName,
+  getRoutes,
 };

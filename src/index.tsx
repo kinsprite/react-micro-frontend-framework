@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Redux from 'redux';
+import 'react-router-dom';
+
+import * as Redux from 'redux';
+import 'react-redux';
+
+import 'redux-thunk';
+import 'redux-observable';
+import 'redux-saga';
+
+import 'connected-react-router';
 
 // import './index.css';
 import App from './App';

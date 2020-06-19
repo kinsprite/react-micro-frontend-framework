@@ -6,6 +6,9 @@
   "repository": "https://github.com/kinsprite/react-microservice-framework",
   "author": "kinsprite",
   "license": "MIT",
+  "routes": [
+    "/framework/"
+  ],
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js"
@@ -26,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^3.3.0",
     "@typescript-eslint/parser": "^3.3.0",
     "camelcase": "^6.0.0",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
@@ -55,7 +59,7 @@
     "typescript": "^3.9.5",
     "url-loader": "^4.1.0",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
     "webpack-manifest-plugin": "^2.2.0"
   },
   "dependencies": {

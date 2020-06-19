@@ -1,8 +1,11 @@
-// const webpack = require('webpack');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -34,8 +37,10 @@ module.exports = (env) => {
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
   );
 
+  const mainEntryName = pkgJson.getMainEntryName();
+
   const webpackEntry = {
-    [pkgJson.getMainEntryName()]: resolvePath('src/index.tsx'),
+    [mainEntryName]: resolvePath('src/index.tsx'),
   };
 
   const gitRev = getGitTagOrShort();
@@ -102,8 +107,11 @@ module.exports = (env) => {
     entry: webpackEntry,
     plugins: [
       new CleanWebpackPlugin(),
-      // new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({ template: resolvePath('public/index.html') }),
+      new ModuleNotFoundPlugin(resolvePath('.')),
+      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+      isEnvDevelopment && new CaseSensitivePathsPlugin(),
+      isEnvDevelopment && new WatchMissingNodeModulesPlugin(resolvePath('node_modules')),
       new ManifestPlugin({
         fileName: 'rms-manifest.json',
         publicPath: publicUrlOrPath,
@@ -126,10 +134,12 @@ module.exports = (env) => {
 
           return {
             entrypoints: entrypointFiles,
-            exportLibrary: libraryName,
             files: manifestFiles,
             gitRevision: gitRev,
+            libraryExport: libraryName,
             publicPath: publicUrlOrPath,
+            routes: pkgJson.getRoutes(),
+            serviceName: mainEntryName,
           };
         },
       }),
@@ -211,10 +221,6 @@ module.exports = (env) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
-    // devServer: {
-    //   port: 3000,
-    //   hot: true,
-    // },
     output: {
       path: resolvePath((isEnvProduction && 'dist') || (isEnvDevelopment && '.tmp')),
       publicPath: publicUrlOrPath,
