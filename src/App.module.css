@@ -10,7 +10,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .AppLogo {
-    animation: App-logo-spin infinite 20s linear;
+    animation: AppLogoSpin infinite 20s linear;
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "sourceMap": false,
+    "sourceMap": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,

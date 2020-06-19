@@ -1,6 +1,3 @@
-/* eslint-disable global-require */
-
-const path = require('path');
 // const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -11,14 +8,20 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const postcssNormalize = require('postcss-normalize');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
 
+const pkgJson = require('../internal/pkgJson');
+const resolvePath = require('../internal/resolvePath');
+const getPublicUrlOrPath = require('../internal/getPublicUrlOrPath');
+
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 
-module.exports = (env, argv) => {
-  console.log(env, argv);
+// (env: string) => {}
+module.exports = (env) => {
+  const isEnvDevelopment = env === 'development';
+  const isEnvProduction = env === 'production';
 
-  const isEnvDevelopment = false;
-  const isEnvProduction = true;
+  // Source maps are resource heavy and can cause out of memory issue for large source files.
+  const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
   const imageInlineSizeLimit = parseInt(
     process.env.IMAGE_INLINE_SIZE_LIMIT || '10000', 10,
@@ -49,7 +52,7 @@ module.exports = (env, argv) => {
             }),
             postcssNormalize(),
           ],
-          sourceMap: isEnvProduction ? false : isEnvDevelopment,
+          sourceMap: isEnvProduction && shouldUseSourceMap,
         },
       },
     ].filter(Boolean);
@@ -59,7 +62,7 @@ module.exports = (env, argv) => {
         {
           loader: require.resolve('resolve-url-loader'),
           options: {
-            sourceMap: isEnvProduction ? false : isEnvDevelopment,
+            sourceMap: isEnvProduction && shouldUseSourceMap,
           },
         },
         {
@@ -75,14 +78,19 @@ module.exports = (env, argv) => {
   };
 
   return {
-  // mode: 'development',
+    mode: (isEnvProduction && 'production') || (isEnvDevelopment && 'development') || 'none',
+    devtool: isEnvProduction
+      ? (shouldUseSourceMap
+        ? 'source-map'
+        : false)
+      : isEnvDevelopment && 'cheap-module-source-map',
     entry: {
-      framework: path.resolve(__dirname, 'src/index.tsx'),
+      framework: resolvePath('src/index.tsx'),
     },
     plugins: [
       new CleanWebpackPlugin(),
       // new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'public/index.html') }),
+      new HtmlWebpackPlugin({ template: resolvePath('public/index.html') }),
       new ManifestPlugin(),
       new ForkTsCheckerWebpackPlugin({
         eslint: {
@@ -104,7 +112,7 @@ module.exports = (env, argv) => {
             loader: require.resolve('url-loader'),
             options: {
               limit: imageInlineSizeLimit,
-              name: 'media/[name].[hash:8].[ext]',
+              name: 'assets/[name].[hash:8].[ext]',
             },
           },
           {
@@ -126,7 +134,7 @@ module.exports = (env, argv) => {
             test: cssModuleRegex,
             use: getStyleLoaders({
               importLoaders: 1,
-              sourceMap: true,
+              sourceMap: isEnvProduction && shouldUseSourceMap,
               modules: {
                 getLocalIdent: getCSSModuleLocalIdent,
               },
@@ -153,7 +161,7 @@ module.exports = (env, argv) => {
             // by webpacks internal loaders.
             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
             options: {
-              name: 'media/[name].[hash:8].[ext]',
+              name: 'assets/[name].[hash:8].[ext]',
             },
           },
         ], // oneOf
@@ -167,11 +175,12 @@ module.exports = (env, argv) => {
     //   hot: true,
     // },
     output: {
-      filename: '[name].[contenthash:8].js',
-      chunkFilename: '[name].[contenthash:8].chunk.js',
-      path: path.resolve(__dirname, 'dist'),
+      path: resolvePath((isEnvProduction && 'dist') || (isEnvDevelopment && '.tmp')),
+      publicPath: getPublicUrlOrPath(isEnvDevelopment),
+      filename: (isEnvProduction && '[name].[contenthash:8].js') || (isEnvDevelopment && '[name].js'),
+      chunkFilename: (isEnvProduction && '[name].[contenthash:8].chunk.js') || (isEnvDevelopment && '[name].chunk.js'),
       // publicPath: '/framework',
-      library: 'rmsFramework',
+      library: pkgJson.getLibraryName(),
       libraryTarget: 'umd',
     },
   };
