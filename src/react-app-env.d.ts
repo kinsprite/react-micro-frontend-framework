@@ -1,1 +1,1 @@
-/// <reference types="react-microservice-scripts" />
+/// <reference types="react-micro-frontend-scripts" />

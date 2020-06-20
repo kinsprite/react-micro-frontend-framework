@@ -1,3 +1,3 @@
-const { start } = require('react-microservice-scripts');
+const { start } = require('react-micro-frontend-scripts');
 
 start();

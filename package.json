@@ -1,9 +1,9 @@
 {
-  "name": "react-microservice-framework",
+  "name": "react-micro-frontend-framework",
   "version": "1.0.1",
-  "description": "React microservice framework",
+  "description": "React micro frontend framework",
   "main": "index.js",
-  "repository": "https://github.com/kinsprite/react-microservice-framework",
+  "repository": "https://github.com/kinsprite/react-micro-frontend-framework",
   "author": "kinsprite",
   "license": "MIT",
   "engines": {
@@ -44,6 +44,6 @@
     "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
-    "react-microservice-scripts": "^1.0.3"
+    "react-micro-frontend-scripts": "^1.0.0"
   }
 }

@@ -3,8 +3,8 @@
 "use strict";
 
 (function(callback) {
-  var services = {
-    // [serviceName: string]: {}
+  var apps = {
+    // [appName: string]: {}
     appExample: {
       name: 'appExample',
       dependencies: ['echart', 'app1'],
@@ -14,5 +14,5 @@
     }
   };
 
-  if (callback) callback(services);
-})(rmsMetadataServicesCallback);
+  if (callback) callback(apps);
+})(rmfMetadataAppsCallback);

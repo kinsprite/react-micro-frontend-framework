@@ -6014,10 +6014,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-microservice-scripts@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npm.taobao.org/react-microservice-scripts/download/react-microservice-scripts-1.0.3.tgz?cache=0&sync_timestamp=1592590326209&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-microservice-scripts%2Fdownload%2Freact-microservice-scripts-1.0.3.tgz#33f84869206fd7c943035e5b6b86808495a6c8f1"
-  integrity sha1-M/hIaSBv18lDA15ba4aAhJWmyPE=
+react-micro-frontend-scripts@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/react-micro-frontend-scripts/download/react-micro-frontend-scripts-1.0.0.tgz#e24941320250de811e46e4e05a0ff0ec60106587"
+  integrity sha1-4klBMgJQ3oEeRuTgWg/w7GAQZYc=
   dependencies:
     "@typescript-eslint/eslint-plugin" "^3.3.0"
     "@typescript-eslint/parser" "^3.3.0"
