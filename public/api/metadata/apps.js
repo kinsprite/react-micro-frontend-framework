@@ -6,7 +6,7 @@
   var apps = {
     // [appName: string]: {}
     appExample: {
-      name: 'appExample',
+      id: 'appExample',
       dependencies: ['echart', 'app1'],
       routes: ['/appExample'],
       styles: ['/app-example-f00322/app-example-a200b003.css'],

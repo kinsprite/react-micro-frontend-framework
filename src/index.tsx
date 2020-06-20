@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/stable';
 
 // import './index.css';
-import App from './App';
+import render from './render';
 
 export * from './exports';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+render(document.getElementById('root'));
+
+console.log('subApp: loading...');
+import('./subApp').then((SubApp) => {
+  console.log('subApp: loaded.', SubApp);
+});

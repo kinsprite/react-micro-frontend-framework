@@ -5,5 +5,6 @@ module.exports = {
     'no-console': 'off',
     'global-require': 'off',
     // 'no-nested-ternary': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
 };
