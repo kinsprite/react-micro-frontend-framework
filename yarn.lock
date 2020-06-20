@@ -1521,13 +1521,6 @@ connect-history-api-fallback@^1.6.0:
   resolved "https://registry.npm.taobao.org/connect-history-api-fallback/download/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
   integrity sha1-izIIk1kwjRERFdgcrT/Oq4iPl7w=
 
-connected-react-router@^6.8.0:
-  version "6.8.0"
-  resolved "https://registry.npm.taobao.org/connected-react-router/download/connected-react-router-6.8.0.tgz#ddc687b31d498322445d235d660798489fa56cae"
-  integrity sha1-3caHsx1JgyJEXSNdZgeYSJ+lbK4=
-  dependencies:
-    prop-types "^15.7.2"
-
 console-browserify@^1.1.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/console-browserify/download/console-browserify-1.2.0.tgz#67063cef57ceb6cf4993a2ab3a55840ae8c49336"
@@ -6073,10 +6066,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-micro-frontend-scripts@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-1.0.2.tgz#463e9a8f9035b368489680000b5f7a58f236409b"
-  integrity sha512-B1LRyl99B7GGJg8SUb0ylwCWe/w23r1SKSOtpofNYqNNWjqJ26UKasNC/UsneCVyujnYvjX7QSQCeGhc+e8iqw==
+react-micro-frontend-scripts@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-1.0.3.tgz#c238967ad40fbcb59bc3858dd2f4845ac7780de2"
+  integrity sha512-rOcWmbdtHR3gaV2x1BOGR8JmbjW5Hk16Hwx5cEcYpTR0sYTA6bVjGXH7nPBz+rX01mnc04rZqYNsieM9p6LY+w==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^3.3.0"
     "@typescript-eslint/parser" "^3.3.0"

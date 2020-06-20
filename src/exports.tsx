@@ -8,8 +8,6 @@ import * as ReactRedux from 'react-redux';
 import 'redux-thunk';
 import * as ReduxObservable from 'redux-observable';
 import * as ReduxSaga from 'redux-saga';
-
-import * as ConnectedReactRouter from 'connected-react-router';
 import * as RxJS from 'rxjs';
 
 export {
@@ -20,6 +18,5 @@ export {
   ReactRedux,
   ReduxObservable,
   ReduxSaga,
-  ConnectedReactRouter,
   RxJS,
 };
