@@ -101,12 +101,20 @@ class AppRegister {
       return app.promiseLoading;
     }
 
-    return new Promise((resolve, reject) => {
+    app.promiseLoading = new Promise((resolve, reject) => {
       Promise.all([
         loadMultiStyles(app.styles),
         loadMultiScripts(app.entries),
-      ]).then(() => resolve(true), (e) => reject(e));
+      ]).then(
+        () => resolve(true),
+        (e) => {
+          app.promiseLoading = null;
+          reject(e);
+        },
+      );
     });
+
+    return app.promiseLoading;
   }
 }
 
