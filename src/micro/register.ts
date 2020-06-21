@@ -15,7 +15,7 @@ interface AppInfo {
   routes: string[]; // as 'path' in 'react-router'
   promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
-  component?: React.Component; // Component to render the route
+  component?: JSX.Element; // Component to render the route
 }
 
 interface AppRegisterInfo {
@@ -55,7 +55,7 @@ class AppRegister {
   }
 
   // use in sub-Apps to register routes' component
-  registerComponent(id: string, component? :React.Component) {
+  registerComponent(id: string, component?: JSX.Element) {
     const app = this.apps[id];
 
     if (app) {
@@ -68,9 +68,9 @@ class AppRegister {
     apps.forEach((app) => {
       this.apps[app.id] = {
         ...app,
-        promiseLoading: undefined,
+        promiseLoading: null,
         loadState: AppLoadState.Init,
-        component: undefined,
+        component: null,
       };
     });
 
@@ -102,12 +102,17 @@ class AppRegister {
     }
 
     app.promiseLoading = new Promise((resolve, reject) => {
+      app.loadState = AppLoadState.Loading;
       Promise.all([
         loadMultiStyles(app.styles),
         loadMultiScripts(app.entries),
       ]).then(
-        () => resolve(true),
+        () => {
+          app.loadState = AppLoadState.Loaded;
+          resolve(true);
+        },
         (e) => {
+          app.loadState = AppLoadState.Init;
           app.promiseLoading = null;
           reject(e);
         },
