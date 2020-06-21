@@ -12,14 +12,14 @@ import {
 
 import App from './App';
 
-const allRoutes : any[] = [];
+const allRoutes = [];
 
-export function appendRoutes(routes: any[]) : void {
+export function appendRoutes(routes: []) : void {
   allRoutes.push(...routes);
   console.log('now all routes:', allRoutes);
 }
 
-function RouteWithSubRoutes(route : {[key: string]: any}) : JSX.Element {
+function RouteWithSubRoutes(route) : JSX.Element {
   return (
     <Route
       path={route.path}

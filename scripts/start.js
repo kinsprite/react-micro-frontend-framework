@@ -1,4 +1,5 @@
 const scripts = require('react-micro-frontend-scripts');
+const helper = require('./helper');
 
 function start() {
   // --- ENV for 'development' only ---
@@ -10,7 +11,7 @@ function start() {
   // process.env.SPLIT_CHUNKS = 'true';
   // process.env.RUNTIME_CHUNK = 'true';
 
-  scripts.runWebpack(scripts.envDevelopment, (config) => config);
+  scripts.runWebpack(scripts.envDevelopment, helper.runWebpackConfigCallback);
 }
 
 start();

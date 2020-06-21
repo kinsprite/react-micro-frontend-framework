@@ -24,4 +24,4 @@ appendRoutes([{
   path: '/sub-app',
   component: SubApp,
   routes: [],
-}]);
+}] as any);

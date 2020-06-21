@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "removeComments": false,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "module": "ESNext",
     "target": "ES5",
     "jsx": "react",
