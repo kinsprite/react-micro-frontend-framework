@@ -5,9 +5,10 @@ import { RedirectToDefaultRoute } from '../util';
 
 interface AsyncAppProps {
   routePath: string;
+  [key: string]: any;
 }
 
-function AsyncApp({ routePath } : AsyncAppProps): React.ReactElement {
+function AsyncApp(props : AsyncAppProps) : React.ReactElement {
   const [loaded, setLoaded] = useState(false);
   const [component, setComponent] = useState(null);
   const [redirect, setRedirect] = useState(false);
@@ -15,7 +16,7 @@ function AsyncApp({ routePath } : AsyncAppProps): React.ReactElement {
 
   useEffect(() => {
     let isMounted = true;
-    const app = register.getAppByRoute(routePath);
+    const app = register.getAppByRoute(props.routePath);
 
     if (app) {
       register.loadApp(app.id).then(() => {
@@ -38,7 +39,7 @@ function AsyncApp({ routePath } : AsyncAppProps): React.ReactElement {
     return redirectDefault;
   }
 
-  return loaded ? component : null;
+  return loaded ? React.createElement(component, props) : null;
 }
 
 export default AsyncApp;

@@ -15,7 +15,7 @@ interface AppInfo {
   routes: string[]; // as 'path' in 'react-router'
   promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
-  component?: JSX.Element; // Component to render the route
+  component?: React.Component | React.FC; // Component to render the route
 }
 
 interface AppRegisterInfo {
@@ -55,7 +55,7 @@ class AppRegister {
   }
 
   // use in sub-Apps to register routes' component
-  registerComponent(id: string, component?: JSX.Element) {
+  registerComponent(id: string, component?: React.Component | React.FC) {
     const app = this.apps[id];
 
     if (app) {
