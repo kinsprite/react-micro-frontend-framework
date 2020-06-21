@@ -25,21 +25,18 @@ export default function render(element: Element) : void {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/sub-app">About</Link>
+              <Link to="/example">Example</Link>
             </li>
           </ul>
 
           <Switch>
             {apps.map((pair) => (
-              <AsyncApp routePath={pair.route} />
+              <Route exact path={pair.route} key="pair.route">
+                <AsyncApp routePath={pair.route} />
+              </Route>
             ))}
             <Route exact path="/">
               <App />
-            </Route>
-            <Route path="*">
-              <Redirect
-                to={{ pathname: '/' }}
-              />
             </Route>
           </Switch>
         </div>
