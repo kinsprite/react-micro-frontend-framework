@@ -11,9 +11,11 @@ import {
 
 import App from './App';
 import { register, AsyncApp } from './micro';
+import { RedirectToDefaultRoute } from './util';
 
 export default function render(element: Element) : void {
   const apps = register.getAppsByRoutes();
+  const redirectDefault = RedirectToDefaultRoute();
 
   ReactDOM.render(
     <React.StrictMode>
@@ -24,7 +26,7 @@ export default function render(element: Element) : void {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/example">Example</Link>
+              <Link to="/app-example">App Example</Link>
             </li>
           </ul>
 
@@ -34,9 +36,13 @@ export default function render(element: Element) : void {
                 <AsyncApp routePath={pair.route} />
               </Route>
             ))}
-            <Route exact path="/">
+            <Route path="/home">
               <App />
             </Route>
+            <Route exact path="/">
+              { redirectDefault }
+            </Route>
+            )
           </Switch>
         </div>
       </Router>

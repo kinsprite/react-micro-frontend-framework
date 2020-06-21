@@ -17,7 +17,8 @@
     <div id="root"></div>
     <script>
       var rmfMetadataApps = [];
-      function rmfMetadataAppsCallback(apps) { rmfMetadataApps = apps }
+      var rmfMetadataExtra = {};
+      function rmfMetadataAppsCallback(apps, extra) { rmfMetadataApps = apps; rmfMetadataExtra = extra; }
     </script>
     <script src="/api/metadata/apps.js?callback=rmfMetadataAppsCallback"></script>
   </body>
