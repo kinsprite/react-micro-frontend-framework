@@ -12,7 +12,7 @@ function getSplitChunksOptions() {
         chunks: 'all',
       },
       'vendor-redux': {
-        test: /[\\/]node_modules[\\/](redux|react-redux|redux-thunk|redux-saga|connected-react-router|rxjs|redux-observable)[\\/]/,
+        test: /[\\/]node_modules[\\/](redux|react-redux|redux-thunk|redux-saga|redux-observable|rxjs)[\\/]/,
         name: 'vendor-redux',
         chunks: 'all',
       },

@@ -11,27 +11,11 @@ import {
 } from 'react-router-dom';
 
 import App from './App';
-
-const allRoutes = [];
-
-export function appendRoutes(routes: []) : void {
-  allRoutes.push(...routes);
-  console.log('now all routes:', allRoutes);
-}
-
-function RouteWithSubRoutes(route) : JSX.Element {
-  return (
-    <Route
-      path={route.path}
-      render={(props) => (
-        // pass the sub-routes down to keep nesting
-        <route.component {...props} routes={route.routes} />
-      )}
-    />
-  );
-}
+import { register, AsyncApp } from './micro';
 
 export default function render(element: Element) : void {
+  const apps = register.getAppsByRoutes();
+
   ReactDOM.render(
     <React.StrictMode>
       <Router>
@@ -46,8 +30,8 @@ export default function render(element: Element) : void {
           </ul>
 
           <Switch>
-            {allRoutes.map((route) => (
-              <RouteWithSubRoutes key={route.path} {...route} />
+            {apps.map((pair) => (
+              <AsyncApp routePath={pair.route} />
             ))}
             <Route exact path="/">
               <App />

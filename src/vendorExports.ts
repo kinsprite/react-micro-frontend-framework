@@ -4,11 +4,11 @@ import * as ReactRouterDOM from 'react-router-dom';
 
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
-
 import 'redux-thunk';
+
+import * as RxJS from 'rxjs';
 import * as ReduxObservable from 'redux-observable';
 import * as ReduxSaga from 'redux-saga';
-import * as RxJS from 'rxjs';
 
 export {
   React,

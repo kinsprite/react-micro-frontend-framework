@@ -1,11 +1,29 @@
-// import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-// function AsyncApp(path, appId) {
-//   const [loaded, setLoaded] = useState(0);
+import register from './register';
 
-//   return '';
-// }
+interface AsyncAppProps {
+  routePath: string;
+}
 
-const nonop = 222;
+function AsyncApp({ routePath } : AsyncAppProps): React.ReactElement {
+  const [loaded, setLoaded] = useState(false);
+  const [component, setComponent] = useState(null);
 
-export default nonop;
+  useEffect(() => {
+    const app = register.getAppByRoute(routePath);
+
+    if (app) {
+      register.loadApp(app.id).then(() => {
+        setLoaded(true);
+        setComponent(app.component);
+      }).catch(() => {
+        setLoaded(false);
+      });
+    }
+  });
+
+  return loaded ? component : null;
+}
+
+export default AsyncApp;

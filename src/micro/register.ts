@@ -1,3 +1,6 @@
+import { loadMultiStyles } from './loadStyle';
+import { loadMultiScripts } from './loadScript';
+
 export enum AppLoadState {
   Init,
   Loading,
@@ -10,7 +13,7 @@ interface AppInfo {
   styles: string[]; // css files
   entries: string[]; // js entries files
   routes: string[]; // as 'path' in 'react-router'
-  promiseLoading?: Promise<AppLoadState>;
+  promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
   component?: React.Component; // Component to render the route
 }
@@ -79,8 +82,31 @@ class AppRegister {
     });
   }
 
+  getAppByRoute(route) {
+    return this.routes2Apps[route];
+  }
+
   getAppsByRoutes() {
-    return Object.keys(this.routes2Apps).map((route) => this.routes2Apps[route]);
+    return Object.keys(this.routes2Apps).map((route) => ({ route, app: this.routes2Apps[route] }));
+  }
+
+  loadApp(id: string) : Promise<boolean> {
+    const app = this.getApp(id);
+
+    if (!app) {
+      return Promise.reject(new Error(`Not app for id: ${id}`));
+    }
+
+    if (app.promiseLoading) {
+      return app.promiseLoading;
+    }
+
+    return new Promise((resolve, reject) => {
+      Promise.all([
+        loadMultiStyles(app.styles),
+        loadMultiScripts(app.entries),
+      ]).then(() => resolve(true), (e) => reject(e));
+    });
   }
 }
 
