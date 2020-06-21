@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 
 function RedirectToDefaultRoute() : JSX.Element {
   const { defaultRoute } = (window as any).rmfMetadataExtra || {};
-  return defaultRoute ? <Redirect to={defaultRoute} /> : null;
+  return defaultRoute ? <Redirect to={defaultRoute} /> : <></>;
 }
 
 function RedirectToHome() : JSX.Element {

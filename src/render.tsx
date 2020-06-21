@@ -32,7 +32,7 @@ export default function render(element: Element) : void {
 
           <Switch>
             {apps.map((pair) => (
-              <Route path={pair.route} key="pair.route">
+              <Route path={pair.route} key={pair.route}>
                 <AsyncApp routePath={pair.route} />
               </Route>
             ))}

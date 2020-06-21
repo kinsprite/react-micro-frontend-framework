@@ -9,20 +9,24 @@ interface AsyncAppProps {
 }
 
 function AsyncApp(props : AsyncAppProps) : React.ReactElement {
-  const [loaded, setLoaded] = useState(false);
-  const [component, setComponent] = useState(null);
-  const [redirect, setRedirect] = useState(false);
+  const { routePath } = props;
+  const app = register.getAppByRoute(routePath);
+
+  // can't use useState() for React.createElement
+  let component : any = app && app.component;
   const redirectDefault = RedirectToDefaultRoute();
+
+  const [loaded, setLoaded] = useState(app && register.isAppLoaded(app.id));
+  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
-    const app = register.getAppByRoute(props.routePath);
 
-    if (app) {
+    if (app && !loaded) {
       register.loadApp(app.id).then(() => {
         if (isMounted) {
+          component = app.component;
           setLoaded(true);
-          setComponent(app.component);
         }
       }).catch(() => {
         if (isMounted) {
@@ -33,13 +37,13 @@ function AsyncApp(props : AsyncAppProps) : React.ReactElement {
     }
 
     return () => { isMounted = false; };
-  });
+  }, [loaded]);
 
   if (redirect) {
     return redirectDefault;
   }
 
-  return loaded ? React.createElement(component, props) : null;
+  return (loaded && component) ? React.createElement(component, props) : <></>;
 }
 
 export default AsyncApp;
