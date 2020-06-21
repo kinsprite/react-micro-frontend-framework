@@ -1,8 +1,9 @@
 {
   "name": "react-micro-frontend-framework",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React micro frontend framework",
   "main": "index.js",
+  "types": "src/index.ts",
   "repository": "https://github.com/kinsprite/react-micro-frontend-framework",
   "author": "kinsprite",
   "license": "MIT",
@@ -48,6 +49,6 @@
     "rxjs": "^6.5.5"
   },
   "devDependencies": {
-    "react-micro-frontend-scripts": "^1.0.5"
+    "react-micro-frontend-scripts": "^1.0.6"
   }
 }

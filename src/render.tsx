@@ -7,7 +7,6 @@ import {
   Switch,
   Route,
   Link,
-  Redirect,
 } from 'react-router-dom';
 
 import App from './App';
@@ -31,7 +30,7 @@ export default function render(element: Element) : void {
 
           <Switch>
             {apps.map((pair) => (
-              <Route exact path={pair.route} key="pair.route">
+              <Route path={pair.route} key="pair.route">
                 <AsyncApp routePath={pair.route} />
               </Route>
             ))}
@@ -41,7 +40,6 @@ export default function render(element: Element) : void {
           </Switch>
         </div>
       </Router>
-      <App />
     </React.StrictMode>,
     element,
   );
