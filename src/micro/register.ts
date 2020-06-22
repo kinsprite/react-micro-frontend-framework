@@ -17,7 +17,7 @@ export interface AppInfo {
   reducer?: Reducer,
   saga?: Saga, // will NOT save in register
   sagaArgs?: Array<any>, // will NOT save in register
-  epic?: Epic,
+  epic?: Epic, // will NOT save in register
 }
 
 interface AppRegisterInfo extends AppInfo {

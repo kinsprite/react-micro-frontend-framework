@@ -1,9 +1,6 @@
 import { combineReducers } from 'redux';
 import { Task } from 'redux-saga';
 
-import { filter } from 'rxjs/operators';
-import { combineEpics } from 'redux-observable';
-
 import { getRegister } from './micro';
 import { AppInfo } from './micro/register';
 import { getStore } from './store';
@@ -30,26 +27,20 @@ function combineReducersAndReplace() {
   }
 }
 
-function combineEpicsAndReplace() {
-  const apps = getRegister().getApps();
-  const epics = Object.keys(apps).map((id) => apps[id].epic).filter(Boolean);
-
-  if (epics.length) {
-    getStore().runEpic(combineEpics(...epics));
-  } else {
-    getStore().runEpic((action$) => action$.pipe(filter(() => false)));
-  }
-}
-
 function registerApp(id: string, appInfo?: AppInfo): RegisterResult {
-  const ok = getRegister().registerFromSubApp(id, { ...appInfo, saga: null, sagaArgs: null });
+  const ok = getRegister().registerFromSubApp(id, {
+    ...appInfo,
+    saga: null,
+    sagaArgs: null,
+    epic: null,
+  });
 
   if (appInfo.reducer) {
     combineReducersAndReplace();
   }
 
   if (appInfo.epic) {
-    combineEpicsAndReplace();
+    getStore().runEpic(appInfo.epic);
   }
 
   return {
