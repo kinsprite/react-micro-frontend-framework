@@ -25,6 +25,7 @@ interface AppRegisterInfo extends AppInfo {
   dependencies: string[]; // dependencies ids
   entries: string[]; // css/js entries files
   routes: string[]; // as 'path' in 'react-router'
+  render: string; // 'root' or others string. 'root' will render on root's router switch
   promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
 }
@@ -77,7 +78,7 @@ class AppRegister {
     return false;
   }
 
-  // use in framework to init apps info
+  // use in framework to init apps info, or append apps which not render on 'root' later
   registerFromMetadata(apps: AppRegisterInfo[]) {
     apps.forEach((app) => {
       this.apps[app.id] = {

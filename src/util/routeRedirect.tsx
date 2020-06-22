@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-function RedirectToDefaultRoute() : JSX.Element {
+function RedirectToDefaultRoute(from: string) : JSX.Element {
   const { defaultRoute } = (window as any).rmfMetadataExtra || {};
-  return defaultRoute ? <Redirect to={defaultRoute} /> : <></>;
+  return (defaultRoute && defaultRoute !== from) ? <Redirect to={defaultRoute} /> : <></>;
 }
 
 function RedirectToHome() : JSX.Element {

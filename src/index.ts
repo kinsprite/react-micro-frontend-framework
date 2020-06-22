@@ -3,7 +3,7 @@ import './polyfill';
 // import './index.css';
 
 import render from './render';
-import { getRegister } from './micro';
+import { AsyncApp, getRegister } from './micro';
 import * as Util from './util';
 
 import registerApp from './registerApp';
@@ -12,8 +12,10 @@ import { getStore } from './store';
 export * from './vendorExports';
 
 export {
+  AsyncApp,
   Util,
   registerApp,
+  getRegister,
   getStore,
 };
 
