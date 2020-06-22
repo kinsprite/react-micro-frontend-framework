@@ -1,6 +1,6 @@
 import './polyfill';
 
-// import './index.css';
+import './root.css';
 
 import render from './render';
 import { AsyncApp, getRegister } from './micro';
