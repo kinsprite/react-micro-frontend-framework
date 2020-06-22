@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import register from './register';
+import getRegister from './register';
 import { RedirectToDefaultRoute } from '../util';
 
 interface AsyncAppProps {
@@ -10,6 +10,7 @@ interface AsyncAppProps {
 
 function AsyncApp(props : AsyncAppProps) : React.ReactElement {
   const { routePath } = props;
+  const register = getRegister();
   const app = register.getAppByRoute(routePath);
 
   // can't use useState() for React.createElement

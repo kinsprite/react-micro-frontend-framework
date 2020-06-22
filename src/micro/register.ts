@@ -1,3 +1,7 @@
+import { Reducer } from 'redux';
+import { Saga } from 'redux-saga';
+import { Epic } from 'redux-observable';
+
 import { loadMultiStyles } from './loadStyle';
 import { loadMultiScripts } from './loadScript';
 
@@ -7,27 +11,34 @@ export enum AppLoadState {
   Loaded,
 }
 
-interface AppInfo {
+export interface AppInfo {
+  component?: React.Component | React.FC; // Component to render the route
+  /* Global redux store here, but recommend to use isolated store in every app */
+  reducer?: Reducer,
+  saga?: Saga, // will NOT save in register
+  sagaArgs?: Array<any>, // will NOT save in register
+  epic?: Epic,
+}
+
+interface AppRegisterInfo extends AppInfo {
   id: string; // as 'serviceName' in manifest
   dependencies: string[]; // dependencies ids
-  styles: string[]; // css files
-  entries: string[]; // js entries files
+  entries: string[]; // css/js entries files
   routes: string[]; // as 'path' in 'react-router'
   promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
-  component?: React.Component | React.FC; // Component to render the route
 }
 
-interface AppRegisterInfo {
-  [id: string]: AppInfo;
+interface AppRegisterInfoMap {
+  [id: string]: AppRegisterInfo;
 }
 
 class AppRegister {
-  // appId to AppInfo
-  apps: AppRegisterInfo = {}
+  // appId to AppRegisterInfo
+  apps: AppRegisterInfoMap = {}
 
-  // routes path to AppInfo
-  routes2Apps: AppRegisterInfo = {}
+  // routes path to AppRegisterInfo
+  routes2Apps: AppRegisterInfoMap = {}
 
   getApps() {
     return this.apps;
@@ -54,17 +65,20 @@ class AppRegister {
     return this.getAppLoadState(id) === AppLoadState.Loaded;
   }
 
-  // use in sub-Apps to register routes' component
-  registerComponent(id: string, component?: React.Component | React.FC) {
+  // use in sub-Apps to register routes' component and other info (such as redux)
+  registerFromSubApp(id: string, appInfo: AppInfo) : boolean {
     const app = this.apps[id];
 
-    if (app) {
-      app.component = component;
+    if (app && appInfo) {
+      Object.assign(app, appInfo);
+      return true;
     }
+
+    return false;
   }
 
   // use in framework to init apps info
-  registerFromMetadata(apps: AppInfo[]) {
+  registerFromMetadata(apps: AppRegisterInfo[]) {
     apps.forEach((app) => {
       this.apps[app.id] = {
         ...app,
@@ -104,8 +118,8 @@ class AppRegister {
     app.promiseLoading = new Promise((resolve, reject) => {
       app.loadState = AppLoadState.Loading;
       Promise.all([
-        loadMultiStyles(app.styles),
-        loadMultiScripts(app.entries),
+        loadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css'))),
+        loadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js'))),
       ]).then(
         () => {
           app.loadState = AppLoadState.Loaded;
@@ -124,4 +138,7 @@ class AppRegister {
 }
 
 const register = new AppRegister();
-export default register;
+
+export default function getRegister() : AppRegister {
+  return register;
+}

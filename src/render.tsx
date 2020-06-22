@@ -10,11 +10,11 @@ import {
 } from 'react-router-dom';
 
 import App from './App';
-import { register, AsyncApp } from './micro';
+import { getRegister, AsyncApp } from './micro';
 import { RedirectToDefaultRoute } from './util';
 
 export default function render(element: Element) : void {
-  const apps = register.getAppsByRoutes();
+  const apps = getRegister().getAppsByRoutes();
   const redirectDefault = RedirectToDefaultRoute();
 
   ReactDOM.render(
