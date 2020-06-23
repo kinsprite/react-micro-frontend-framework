@@ -6122,10 +6122,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-micro-frontend-scripts@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-1.3.0.tgz#83cddfde3ea65056f1337273dd16f01117d70e5e"
-  integrity sha512-/kRXw13pAt/LBsApJBHgw1yfRrEOx+m93FO99z19+ej5IGGQwM7N4YXO3G2Nwcj7qZQqfWIOrhqvng+d6MlBJA==
+react-micro-frontend-scripts@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-1.4.0.tgz#ab45c8fa9a22308c1756843b3d99e373badce9d8"
+  integrity sha512-CH0amUekN8ZM/nwagsWeKgdm6Pq9iBkxUWpN/3gEhQ0FvWsIt4a0fkCYhrT/6a+HM8ErqoVQBePVvGadaSuoBg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^3.3.0"
     "@typescript-eslint/parser" "^3.3.0"
@@ -6546,15 +6546,10 @@ safe-regex@^1.1.0:
   resolved "https://registry.npm.taobao.org/safer-buffer/download/safer-buffer-2.1.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsafer-buffer%2Fdownload%2Fsafer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
-sanitize.css@*:
+sanitize.css@*, sanitize.css@^11.0.1:
   version "11.0.1"
   resolved "https://registry.npm.taobao.org/sanitize.css/download/sanitize.css-11.0.1.tgz#e275e5e81a671adc34a8d36efd4182df0d5d4b93"
   integrity sha1-4nXl6BpnGtw0qNNu/UGC3w1dS5M=
-
-sanitize.css@^11.0.1:
-  version "11.0.1"
-  resolved "https://registry.yarnpkg.com/sanitize.css/-/sanitize.css-11.0.1.tgz#e275e5e81a671adc34a8d36efd4182df0d5d4b93"
-  integrity sha512-Q762QXJGHIyFLayll6zUueGKslmGxNpbEDpSB/sdaZ9Xgz+v6AYlVc5P49sorc9cPR9y47npHBfXswGo1I32tg==
 
 sax@~1.2.4:
   version "1.2.4"
