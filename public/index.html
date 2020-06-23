@@ -16,10 +16,9 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script>
-      var rmfMetadataApps = [];
-      var rmfMetadataExtra = {};
-      function rmfMetadataAppsCallback(apps, extra) { rmfMetadataApps = apps; rmfMetadataExtra = extra; }
+      var rmfMetadataJSONP = {apps:[], extra: {}};
+      function rmfMetadataCallback(data) { rmfMetadataJSONP = data }
     </script>
-    <script src="/api/metadata/apps.js?callback=rmfMetadataAppsCallback"></script>
+    <script src="/api/metadata/info?callback=rmfMetadataCallback"></script>
   </body>
 </html>

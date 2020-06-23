@@ -19,7 +19,5 @@ export {
   getStore,
 };
 
-const apps = ((window as any).rmfMetadataApps) || [];
-getRegister().registerFromMetadata(apps);
-
+getRegister().registerFromMetadata(Util.getMetadataApps());
 render(document.getElementById('root'));
