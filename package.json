@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-framework",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "React micro frontend framework",
   "main": "index.js",
   "module": "src/index.ts",
@@ -41,7 +41,7 @@
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.1",
-    "react-micro-frontend-scripts": "^1.4.0",
+    "react-micro-frontend-scripts": "^1.5.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
