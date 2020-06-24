@@ -14,7 +14,6 @@ import { getStore } from './store';
 
 function RouterBase() {
   const apps = getRegister().getAppsByRoutes().filter((pair) => pair.app.render === 'root');
-  const redirectDefault = RedirectToDefaultRoute('/');
 
   return (
     <Router>
@@ -24,8 +23,8 @@ function RouterBase() {
             <AsyncApp appId={pair.app.id} routePath={pair.route} />
           </Route>
         ))}
-        <Route exact path="/">
-          { redirectDefault }
+        <Route path="*">
+          { RedirectToDefaultRoute() }
         </Route>
         )
       </Switch>

@@ -7,6 +7,7 @@ import { RedirectToDefaultRoute } from '../util';
 interface AsyncAppProps {
   appId: string;
   routePath: string;
+  disableRedirect?: boolean,
   redirectOnFail?: string;
   [key: string]: any;
 }
@@ -18,7 +19,9 @@ enum LoadedState {
 }
 
 function AsyncApp(props : AsyncAppProps) : React.ReactElement {
-  const { appId, routePath, redirectOnFail } = props;
+  const {
+    appId, routePath, disableRedirect, redirectOnFail,
+  } = props;
   const register = getRegister();
   const app = register.getApp(appId);
 
@@ -59,7 +62,7 @@ function AsyncApp(props : AsyncAppProps) : React.ReactElement {
     return () => { isMounted = false; };
   }, [once]);
 
-  if (result.loaded === LoadedState.Failed) {
+  if (result.loaded === LoadedState.Failed && !disableRedirect) {
     return redirectOnFail ? <Redirect to={redirectOnFail} /> : RedirectToDefaultRoute(routePath);
   }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { getMetadataExtra } from './metadata';
 
-function RedirectToDefaultRoute(from: string) : JSX.Element {
+function RedirectToDefaultRoute(from?: string) : JSX.Element {
   const { defaultRoute } = getMetadataExtra();
   return (defaultRoute && defaultRoute !== from) ? <Redirect to={defaultRoute} /> : <></>;
 }

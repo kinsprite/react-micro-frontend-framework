@@ -6143,10 +6143,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-i
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
-react-micro-frontend-scripts@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-1.6.1.tgz#b009446575f3c75af7d97aab1791a15434d535ca"
-  integrity sha512-jMmNmZnbKQEHY/0UywnYP3c9DMAjMUJ17vn6xqnCX391t3+qXWg2uPZ+LtTNUp23uhBpHa6uTJHYs+LjC/5rog==
+react-micro-frontend-scripts@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-micro-frontend-scripts/-/react-micro-frontend-scripts-2.0.0.tgz#9fde3bc6ece383a077c93ce0fdfb5416b9b033bf"
+  integrity sha512-TgoNmr4oroptHLKaIZi70uNXLZcFOk4VTqP5FxurQL5p/tcfjikqjCTtIeWexqqD0AZi0r32MnVGXRjTPBFJcg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^3.3.0"
     "@typescript-eslint/parser" "^3.3.0"
