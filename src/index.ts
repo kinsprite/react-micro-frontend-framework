@@ -1,4 +1,5 @@
-import './polyfill';
+// polyfill include in 'production' only, see: 'scripts/build.js'
+// import './polyfill';
 
 import './root.css';
 

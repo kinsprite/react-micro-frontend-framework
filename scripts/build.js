@@ -13,7 +13,13 @@ function build() {
   // process.env.SPLIT_CHUNKS = 'true';
   // process.env.RUNTIME_CHUNK = 'true';
 
-  scripts.runWebpack(scripts.envProduction, scripts.helper.webpackConfigCallback);
+  scripts.runWebpack(scripts.envProduction, (config) => {
+    const newConfig = scripts.helper.webpackConfigCallback(config);
+    const key = Object.keys(newConfig.entry)[0];
+    // Include polyfill for production only
+    newConfig.entry[key] = [scripts.resolvePath('src/polyfill'), newConfig.entry[key]];
+    return newConfig;
+  });
 }
 
 build();
