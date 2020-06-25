@@ -38,12 +38,34 @@ interface AppRegisterInfoMap {
   [id: string]: AppRegisterInfo;
 }
 
+export interface AppRegisterRenderItem {
+  app: AppRegisterInfo;
+  render: MetadataRender;
+}
+
 class AppRegister {
   // appId to AppRegisterInfo
   apps: AppRegisterInfoMap = {}
 
   getAppsAsArray() {
     return Object.keys(this.apps).map((id) => this.apps[id]);
+  }
+
+  filterRenderItems(renderId: string) {
+    const renderItems = [] as AppRegisterRenderItem[];
+
+    this.getAppsAsArray().forEach((app) => {
+      app.renders.forEach((metaRender) => {
+        if (metaRender.renderId === renderId) {
+          renderItems.push({
+            app,
+            render: metaRender,
+          });
+        }
+      });
+    });
+
+    return renderItems;
   }
 
   getApps() {

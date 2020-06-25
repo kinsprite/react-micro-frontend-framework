@@ -8,28 +8,12 @@ import {
 } from 'react-router-dom';
 
 import { Provider } from 'react-redux';
-import { getRegister, AsyncApp, AppRegisterInfo } from './micro';
-import { MetadataRender, RedirectToDefaultRoute } from './util';
+import { getRegister, AsyncApp } from './micro';
+import { RedirectToDefaultRoute } from './util';
 import { getStore } from './store';
 
-interface RenderItem {
-  app: AppRegisterInfo;
-  render: MetadataRender;
-}
-
 function RouterBase() {
-  const renderItems = [];
-
-  getRegister().getAppsAsArray().forEach((app) => {
-    app.renders.forEach((metaRender) => {
-      if (metaRender.renderId === 'root') {
-        renderItems.push({
-          app,
-          render: metaRender,
-        });
-      }
-    });
-  });
+  const renderItems = getRegister().filterRenderItems('root');
 
   return (
     <Router>

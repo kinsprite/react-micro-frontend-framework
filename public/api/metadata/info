@@ -11,8 +11,7 @@
           '/rmf-app-example/658c5f91/app-example-a200b003.css',
           '/rmf-app-example/658c5f91/app-example-b889c22.js'
         ],
-        routes: ['/app-example'],
-        render: 'root',
+        renders: [{renderId: 'root', routePath: '/app-example', componentKey: 'default'}],
       },
     ],
     extra: {
