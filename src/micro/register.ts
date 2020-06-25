@@ -5,6 +5,8 @@ import { Epic } from 'redux-observable';
 import { loadMultiStyles } from './loadStyle';
 import { loadMultiScripts } from './loadScript';
 
+import { MetadataRender } from '../util';
+
 export enum AppLoadState {
   Init,
   Loading,
@@ -12,20 +14,22 @@ export enum AppLoadState {
 }
 
 export interface AppInfo {
-  component?: React.Component | React.FC; // Component to render the route
+  // Components map for rendering, such as: { default: MyComponent }
+  components?: {
+    [key: string]: React.Component | React.FC;
+  };
   /* Global redux store here, but recommend to use isolated store in every app */
-  reducer?: Reducer,
-  saga?: Saga, // will NOT save in register
-  sagaArgs?: Array<any>, // will NOT save in register
-  epic?: Epic, // will NOT save in register
+  reducer?: Reducer;
+  saga?: Saga; // will NOT save in register
+  sagaArgs?: Array<any>; // will NOT save in register
+  epic?: Epic; // will NOT save in register
 }
 
-interface AppRegisterInfo extends AppInfo {
+export interface AppRegisterInfo extends AppInfo {
   id: string; // as 'serviceName' in manifest
   dependencies: string[]; // dependencies ids
   entries: string[]; // css/js entries files
-  routes: string[]; // as 'path' in 'react-router'
-  render: string; // 'root' or others string. 'root' will render on root's router switch
+  renders: MetadataRender[];
   promiseLoading?: Promise<boolean>;
   loadState?: AppLoadState,
 }
@@ -38,8 +42,9 @@ class AppRegister {
   // appId to AppRegisterInfo
   apps: AppRegisterInfoMap = {}
 
-  // routes path to AppRegisterInfo
-  routes2Apps: AppRegisterInfoMap = {}
+  getAppsAsArray() {
+    return Object.keys(this.apps).map((id) => this.apps[id]);
+  }
 
   getApps() {
     return this.apps;
@@ -82,27 +87,12 @@ class AppRegister {
   registerFromMetadata(apps: AppRegisterInfo[]) {
     apps.forEach((app) => {
       this.apps[app.id] = {
+        components: {},
         ...app,
         promiseLoading: null,
         loadState: AppLoadState.Init,
-        component: null,
       };
     });
-
-    Object.keys(this.apps).forEach((id) => {
-      const app = this.apps[id];
-      app.routes.forEach((route) => {
-        this.routes2Apps[route] = app;
-      });
-    });
-  }
-
-  getAppByRoute(route) {
-    return this.routes2Apps[route];
-  }
-
-  getAppsByRoutes() {
-    return Object.keys(this.routes2Apps).map((route) => ({ route, app: this.routes2Apps[route] }));
   }
 
   loadApp(id: string) : Promise<boolean> {

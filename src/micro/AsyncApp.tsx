@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import getRegister from './register';
-import { RedirectToDefaultRoute } from '../util';
+import { MetadataRender, RedirectToDefaultRoute } from '../util';
 
-interface AsyncAppProps {
+interface AsyncAppProps extends MetadataRender {
   appId: string;
-  routePath: string;
   disableRedirect?: boolean,
   redirectOnFail?: string;
   [key: string]: any;
@@ -20,7 +19,7 @@ enum LoadedState {
 
 function AsyncApp(props : AsyncAppProps) : React.ReactElement {
   const {
-    appId, routePath, disableRedirect, redirectOnFail,
+    appId, routePath, componentKey, disableRedirect, redirectOnFail,
   } = props;
   const register = getRegister();
   const app = register.getApp(appId);
@@ -31,7 +30,8 @@ function AsyncApp(props : AsyncAppProps) : React.ReactElement {
   const [result, setResult] = useState(
     isAppLoaded ? {
       loaded: LoadedState.OK,
-      component: app && app.component, // can't use React.FC in useState() for React.createElement
+      // Can't use React.FC in useState() for React.createElement()
+      component: app && app.components && app.components[componentKey],
     } : {
       loaded: LoadedState.Init,
       component: null,
@@ -46,7 +46,7 @@ function AsyncApp(props : AsyncAppProps) : React.ReactElement {
         if (isMounted) {
           setResult({
             loaded: LoadedState.OK,
-            component: app.component,
+            component: app.components && app.components[componentKey],
           });
         }
       }).catch(() => {

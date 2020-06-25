@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-framework",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "React micro frontend framework",
   "main": "index.js",
   "module": "src/index.ts",
@@ -13,8 +13,7 @@
   },
   "rmfManifest": {
     "dependencies": [],
-    "routes": [],
-    "render": ""
+    "renders": []
   },
   "scripts": {
     "start": "node scripts/start.js",
