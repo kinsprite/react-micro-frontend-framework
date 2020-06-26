@@ -124,6 +124,58 @@ class AppRegister {
       return Promise.reject(new Error(`Not app for id: ${id}`));
     }
 
+    if (app.dependencies.length === 0) {
+      return this.loadAppIgnoreDependencies(id);
+    }
+
+    const dependenciesTopo = this.generateDependenciesTopo(app);
+
+    return new Promise((resolve, reject) => {
+      Promise.all(dependenciesTopo.map((appId) => this.loadAppIgnoreDependencies(appId))).then(
+        () => resolve(true),
+        (e) => reject(e),
+      );
+    });
+  }
+
+  generateDependenciesTopo(appBegin: AppRegisterInfo): string[] {
+    const topo : string[] = [];
+
+    enum Color { White, Gray, Black}
+    const nodesVisited: {[id: string]: Color} = {};
+
+    // DeepFirstVisit
+    const visitApp = (app: AppRegisterInfo) => {
+      nodesVisited[app.id] = Color.Gray;
+
+      app.dependencies.forEach((depId) => {
+        const appDep = this.getApp(depId);
+
+        if (appDep) {
+          if (nodesVisited[depId] !== Color.Gray && nodesVisited[depId] !== Color.Black) {
+            visitApp(appDep);
+          }
+        } else {
+          throw new Error(`Not missing dependency app '${depId}' for app '${app.id}'.`);
+        }
+      });
+
+      nodesVisited[app.id] = Color.Black;
+      // insert new item to the front
+      topo.unshift(app.id);
+    };
+
+    visitApp(appBegin);
+    return topo;
+  }
+
+  loadAppIgnoreDependencies(id: string) : Promise<boolean> {
+    const app = this.getApp(id);
+
+    if (!app) {
+      return Promise.reject(new Error(`Not app for id: ${id}`));
+    }
+
     if (app.promiseLoading) {
       return app.promiseLoading;
     }
