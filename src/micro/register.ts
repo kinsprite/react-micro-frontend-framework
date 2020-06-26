@@ -4,6 +4,7 @@ import { Epic } from 'redux-observable';
 
 import { loadMultiStyles } from './loadStyle';
 import { loadMultiScripts } from './loadScript';
+import { preloadMultiStyles, preloadMultiScripts } from './preload';
 
 import { MetadataRender } from '../util';
 
@@ -128,17 +129,19 @@ class AppRegister {
       return this.loadAppIgnoreDependencies(id);
     }
 
-    const dependenciesTopo = this.generateDependenciesTopo(app);
+    // Can't use topo-sort to run Promise.all, which may finish loading the current css/js first
+    const depPromises = app.dependencies.map((depId) => this.loadApp(depId));
 
-    return new Promise((resolve, reject) => {
-      Promise.all(dependenciesTopo.map((appId) => this.loadAppIgnoreDependencies(appId))).then(
-        () => resolve(true),
-        (e) => reject(e),
-      );
-    });
+    preloadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css')));
+    preloadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js')));
+
+    return Promise.all(depPromises).then(
+      () => this.loadAppIgnoreDependencies(id),
+      (e) => Promise.reject(e),
+    );
   }
 
-  generateDependenciesTopo(appBegin: AppRegisterInfo): string[] {
+  generateDependenciesTopo(appBegin: AppRegisterInfo, includeBegin: boolean): string[] {
     const topo : string[] = [];
 
     enum Color { White, Gray, Black}
@@ -161,8 +164,10 @@ class AppRegister {
       });
 
       nodesVisited[app.id] = Color.Black;
-      // insert new item to the front
-      topo.unshift(app.id);
+      // insert the finished id to the front
+      if (app.id !== appBegin.id || includeBegin) {
+        topo.push(app.id);
+      }
     };
 
     visitApp(appBegin);
@@ -180,23 +185,20 @@ class AppRegister {
       return app.promiseLoading;
     }
 
-    app.promiseLoading = new Promise((resolve, reject) => {
-      app.loadState = AppLoadState.Loading;
-      Promise.all([
-        loadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css'))),
-        loadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js'))),
-      ]).then(
-        () => {
-          app.loadState = AppLoadState.Loaded;
-          resolve(true);
-        },
-        (e) => {
-          app.loadState = AppLoadState.Init;
-          app.promiseLoading = null;
-          reject(e);
-        },
-      );
-    });
+    app.promiseLoading = Promise.all([
+      loadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css'))),
+      loadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js'))),
+    ]).then(
+      () => {
+        app.loadState = AppLoadState.Loaded;
+        return Promise.resolve(true);
+      },
+      (e) => {
+        app.loadState = AppLoadState.Init;
+        app.promiseLoading = null;
+        return Promise.reject(e);
+      },
+    );
 
     return app.promiseLoading;
   }

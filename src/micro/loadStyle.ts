@@ -55,8 +55,7 @@ function loadStyle(fullhref: string) : Promise<boolean> {
     linkTag.onerror = onFail;
     linkTag.href = fullhref;
 
-    const head = document.getElementsByTagName('head')[0];
-    head.appendChild(linkTag);
+    document.head.appendChild(linkTag);
   });
 }
 
