@@ -1,6 +1,6 @@
 {
   "name": "react-micro-frontend-framework",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "React micro frontend framework",
   "main": "index.js",
   "module": "src/index.ts",

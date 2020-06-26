@@ -141,7 +141,8 @@ class AppRegister {
     );
   }
 
-  generateDependenciesTopo(appBegin: AppRegisterInfo, includeBegin: boolean): string[] {
+  // Dependencies topo, the 'idBegin' will be the last one
+  generateAppDependenciesTopo(idBegin: string, includeBegin: boolean): string[] {
     const topo : string[] = [];
 
     enum Color { White, Gray, Black}
@@ -165,12 +166,17 @@ class AppRegister {
 
       nodesVisited[app.id] = Color.Black;
       // insert the finished id to the front
-      if (app.id !== appBegin.id || includeBegin) {
+      if (app.id !== idBegin || includeBegin) {
         topo.push(app.id);
       }
     };
 
-    visitApp(appBegin);
+    const appBegin = this.getApp(idBegin);
+
+    if (appBegin) {
+      visitApp(appBegin);
+    }
+
     return topo;
   }
 
