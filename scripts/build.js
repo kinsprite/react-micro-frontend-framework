@@ -3,7 +3,7 @@ const scripts = require('react-micro-frontend-scripts');
 function build() {
   // --- ENV for 'production' only ---
   process.env.PUBLIC_ROOT_URL = '/';
-  // process.env.GENERATE_SOURCEMAP = 'true';
+  process.env.GENERATE_SOURCEMAP = 'false';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
   // process.env.MINIMIZE_IN_PRODUCTION = 'true';
 
@@ -15,9 +15,9 @@ function build() {
 
   scripts.runWebpack(scripts.envProduction, (config) => {
     const newConfig = scripts.helper.webpackConfigCallback(config);
-    const key = Object.keys(newConfig.entry)[0];
-    // Include polyfill for production only
-    newConfig.entry[key] = [scripts.resolvePath('src/polyfill'), newConfig.entry[key]];
+    // We have an new Polyfill package, NOT required to include polyfill in this project
+    // const key = Object.keys(newConfig.entry)[0];
+    // newConfig.entry[key] = [scripts.resolvePath('src/polyfill'), newConfig.entry[key]];
     return newConfig;
   });
 }

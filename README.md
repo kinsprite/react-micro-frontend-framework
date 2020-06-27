@@ -3,7 +3,7 @@
 
 A framework to load `Micro Frontend` apps in React. `Micro Frontend` can be loaded in React Router dynamically, or just use `AsyncApp` component to load it on demand.
 
-These libraries have been included in the framework: `corejs` polyfill, `react`, `react-dom`, `react-router-dom`, `redux`, `react-redux`, `redux-thunk`, `rxjs`, `rxjs/operators`, `redux-observable`, `redux-saga`, `redux-saga/effects`.
+These libraries have been included in the framework: `react`, `react-dom`, `react-router-dom`, `redux`, `react-redux`, `redux-thunk`, `rxjs`, `rxjs/operators`, `redux-observable`, `redux-saga`, `redux-saga/effects`.
 
 ## Features
 
@@ -13,4 +13,5 @@ These libraries have been included in the framework: `corejs` polyfill, `react`,
 * A global redux store can be used for states which cross multi `Micro Frontend` apps.
 
 ## Example
-See: http://micro.qinzhiqiang.cn
+
+Site: https://micro.qinzhiqiang.cn
