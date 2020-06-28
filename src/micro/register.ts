@@ -21,9 +21,10 @@ export interface AppInfo {
   };
   /* Global redux store here, but recommend to use isolated store in every app */
   reducer?: Reducer;
-  saga?: Saga; // will NOT save in register
-  sagaArgs?: Array<any>; // will NOT save in register
-  epic?: Epic; // will NOT save in register
+  // Saga end Epic, run in registering only, not be saved in register
+  saga?: Saga;
+  sagaArgs?: Array<any>;
+  epic?: Epic;
 }
 
 export interface AppRegisterInfo extends AppInfo {
@@ -106,7 +107,7 @@ class AppRegister {
     return false;
   }
 
-  // use in framework to init apps info, or append apps which not render on 'root' later
+  // use in framework to init apps info, or append apps which not be rendered on 'root' later
   registerFromMetadata(apps: AppRegisterInfo[]) {
     apps.forEach((app) => {
       this.apps[app.id] = {
@@ -122,7 +123,7 @@ class AppRegister {
     const app = this.getApp(id);
 
     if (!app) {
-      return Promise.reject(new Error(`Not app for id: ${id}`));
+      return Promise.reject(new Error(`No app for id: ${id}`));
     }
 
     if (app.dependencies.length === 0) {
@@ -132,13 +133,24 @@ class AppRegister {
     // Can't use topo-sort to run Promise.all, which may finish loading the current css/js first
     const depPromises = app.dependencies.map((depId) => this.loadApp(depId));
 
-    preloadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css')));
-    preloadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js')));
+    this.preloadAppEntries(id);
 
     return Promise.all(depPromises).then(
       () => this.loadAppIgnoreDependencies(id),
       (e) => Promise.reject(e),
     );
+  }
+
+  preloadAppEntries(id: string) : boolean {
+    const app = this.getApp(id);
+
+    if (!app) {
+      return false;
+    }
+
+    preloadMultiStyles(app.entries.filter((x) => x.toLowerCase().endsWith('.css')));
+    preloadMultiScripts(app.entries.filter((x) => x.toLowerCase().endsWith('.js')));
+    return true;
   }
 
   // Dependencies topo, the 'idBegin' will be the last one
@@ -160,7 +172,7 @@ class AppRegister {
             visitApp(appDep);
           }
         } else {
-          throw new Error(`Not missing dependency app '${depId}' for app '${app.id}'.`);
+          throw new Error(`Missing dependency app '${depId}' for app '${app.id}'.`);
         }
       });
 
@@ -184,7 +196,7 @@ class AppRegister {
     const app = this.getApp(id);
 
     if (!app) {
-      return Promise.reject(new Error(`Not app for id: ${id}`));
+      return Promise.reject(new Error(`No app for id: ${id}`));
     }
 
     if (app.promiseLoading) {

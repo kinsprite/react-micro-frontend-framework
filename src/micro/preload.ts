@@ -18,7 +18,7 @@ function preload(fullhref: string, as: string) : void {
   document.head.appendChild(linkTag);
 }
 
-function preloadStyle(fullhref) : void {
+function preloadStyle(fullhref: string) : void {
   preload(fullhref, 'style');
 }
 
@@ -26,7 +26,7 @@ function preloadMultiStyles(fullhrefs: string[]) : void {
   fullhrefs.map(preloadStyle);
 }
 
-function preloadScript(fullhref) : void {
+function preloadScript(fullhref: string) : void {
   preload(fullhref, 'script');
 }
 

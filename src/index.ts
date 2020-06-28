@@ -13,6 +13,17 @@ import { getStore } from './store';
 export * from './vendorExports';
 
 export {
+  loadScript,
+  loadMultiScripts,
+  loadStyle,
+  loadMultiStyles,
+  preloadStyle,
+  preloadMultiStyles,
+  preloadScript,
+  preloadMultiScripts,
+} from './micro';
+
+export {
   AsyncApp,
   Util,
   registerApp,
