@@ -13,7 +13,8 @@
   },
   "rmfManifest": {
     "dependencies": [],
-    "renders": []
+    "renders": [],
+    "extra": {}
   },
   "scripts": {
     "start": "node scripts/start.js",
