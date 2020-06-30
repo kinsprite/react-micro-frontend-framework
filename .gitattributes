@@ -1,0 +1,37 @@
+*         text=auto
+
+*.txt		  text eol=lf
+*.md		  text eol=lf
+
+*.css     text eol=lf
+*.pcss    text eol=lf
+*.postcss text eol=lf
+*.scss    text eol=lf
+*.less    text eol=lf
+
+*.js      text eol=lf
+*.jsx     text eol=lf
+*.ts      text eol=lf
+*.tsx     text eol=lf
+
+*.ejs     text eol=lf
+*.html    text eol=lf
+*.htm     text eol=lf
+
+*.json    text eol=lf
+*.yaml    text eol=lf
+*.yml     text eol=lf
+
+*.sh		  text eol=lf
+
+.*config  text eol=lf
+.*rc      text eol=lf
+.*intignore   text eol=lf
+.npmignore    text eol=lf
+browserslist  text eol=lf
+
+*.bmp 	 -text
+*.icon	 -text
+*.jpg		 -text
+*.png		 -text
+*.zip    -text
