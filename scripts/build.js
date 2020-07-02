@@ -2,7 +2,9 @@ const scripts = require('react-micro-frontend-scripts');
 
 function build() {
   // --- ENV for 'production' only ---
+  process.env.PUBLIC_DISABLE_REVISION = 'true';
   process.env.PUBLIC_ROOT_URL = '/';
+  // process.env.PUBLIC_URL = '/rmf-framework/';
   process.env.GENERATE_SOURCEMAP = 'false';
   // process.env.INLINE_RUNTIME_CHUNK = 'true';
   // process.env.MINIMIZE_IN_PRODUCTION = 'true';
